@@ -167,10 +167,16 @@ function getTomorrowDate() {
 async function loadFlights(departureCode, arrivalCode, date) {
   const flightSelect = document.getElementById("flight");
   const flightGroup = document.getElementById("flightGroup");
+  const statusEl = document.getElementById("flightStatus");
 
   flightSelect.innerHTML = '<option value="">Loading flights...</option>';
   flightSelect.disabled = true;
   flightGroup.style.display = "block";
+
+  if (statusEl) {
+    statusEl.style.display = "block";
+    statusEl.textContent = "Loading flights from API...";
+  }
 
   const url = `${FLIGHT_API}/searchDayFlights?location=${departureCode}&destination=${arrivalCode}&departDate=${date}&fullResults=false`;
   console.log("Fetching flights:", url);
@@ -184,6 +190,7 @@ async function loadFlights(departureCode, arrivalCode, date) {
 
     const data = await response.json();
     console.log("Flights data:", data);
+    console.log("Is array?", Array.isArray(data), "Length:", data.length);
 
     // API returns array directly, not { flights: [...] }
     if (Array.isArray(data) && data.length > 0) {
@@ -208,13 +215,28 @@ async function loadFlights(departureCode, arrivalCode, date) {
 
       flightSelect.disabled = false;
       console.log(`Loaded ${data.length} flights`);
+
+      if (statusEl) {
+        statusEl.textContent = `✓ Found ${data.length} flights`;
+        setTimeout(() => { statusEl.style.display = "none"; }, 3000);
+      }
     } else {
       console.warn("No flights in response:", data);
       flightSelect.innerHTML = '<option value="">No flights found for this date</option>';
+
+      if (statusEl) {
+        statusEl.textContent = "No flights found for this route/date";
+        statusEl.style.color = "#FF5F68";
+      }
     }
   } catch (error) {
     console.error("Error loading flights:", error);
     flightSelect.innerHTML = `<option value="">Error: ${error.message}</option>`;
+
+    if (statusEl) {
+      statusEl.textContent = `Error: ${error.message}`;
+      statusEl.style.color = "#FF5F68";
+    }
   }
 }
 
