@@ -8,12 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeForm() {
-  // Set default date to tomorrow
+  // Set default date to tomorrow and minimum date to today
+  const today = new Date();
+  const todayString = today.toISOString().split("T")[0];
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const dateString = tomorrow.toISOString().split("T")[0];
-  document.getElementById("outDate").value = dateString;
-  document.getElementById("outDate").setAttribute("min", dateString);
+  const tomorrowString = tomorrow.toISOString().split("T")[0];
+
+  document.getElementById("outDate").setAttribute("min", todayString);
+  document.getElementById("outDate").value = tomorrowString;
 
   // Check for URL params
   const urlParams = new URLSearchParams(window.location.search);
