@@ -179,10 +179,15 @@ async function loadFlights(departureCode, arrivalCode, date) {
   }
 
   const url = `${FLIGHT_API}/searchDayFlights?location=${departureCode}&destination=${arrivalCode}&departDate=${date}&fullResults=false`;
-  console.log("Fetching flights:", url);
+  console.log("=== FLIGHT LOOKUP DEBUG ===");
+  console.log("Departure:", departureCode);
+  console.log("Destination:", arrivalCode);
+  console.log("Date:", date);
+  console.log("Full URL:", url);
 
   try {
     const response = await fetch(url);
+    console.log("Response status:", response.status, response.statusText);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
