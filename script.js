@@ -67,21 +67,32 @@ function setupEventListeners() {
 
 async function loadDestinations(departureCode) {
   const destinationSelect = document.getElementById("destination");
+  const dateInput = document.getElementById("outDate");
+
   destinationSelect.innerHTML = '<option value="">Loading destinations...</option>';
   destinationSelect.disabled = true;
 
+  // Get date for API call
+  const departDate = dateInput.value || getTomorrowDate();
+
   try {
-    const response = await fetch(`${FLIGHT_API}/destinations?departure=${departureCode}`);
+    const response = await fetch(`${FLIGHT_API}/destinations?location=${departureCode}&departDate=${departDate}`);
     const data = await response.json();
 
-    if (data && data.destinations && data.destinations.length > 0) {
+    if (Array.isArray(data) && data.length > 0) {
       destinationSelect.innerHTML = '<option value="">Choose destination</option>';
 
-      data.destinations.forEach(dest => {
+      data.forEach(dest => {
         const option = document.createElement("option");
-        option.value = dest.iata || "";
-        option.textContent = `${dest.city || dest.airport || ""} (${dest.iata || ""})`;
-        destinationSelect.appendChild(option);
+        // Use all airports for multi-airport cities (e.g., NYC has JFK,LGA,EWR)
+        const airportCodes = (dest.airports && dest.airports.length > 0) ? dest.airports.join(",") : "";
+        const cityName = dest.city || "";
+
+        if (airportCodes && cityName) {
+          option.value = airportCodes;
+          option.textContent = `${cityName} (${airportCodes})`;
+          destinationSelect.appendChild(option);
+        }
       });
 
       destinationSelect.disabled = false;
@@ -94,6 +105,12 @@ async function loadDestinations(departureCode) {
   }
 }
 
+function getTomorrowDate() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow.toISOString().split("T")[0];
+}
+
 async function loadFlights(departureCode, arrivalCode, date) {
   const flightSelect = document.getElementById("flight");
   const flightGroup = document.getElementById("flightGroup");
@@ -104,7 +121,7 @@ async function loadFlights(departureCode, arrivalCode, date) {
 
   try {
     const response = await fetch(
-      `${FLIGHT_API}/searchDayFlights?departure=${departureCode}&arrival=${arrivalCode}&date=${date}&fullResults=false`
+      `${FLIGHT_API}/searchDayFlights?location=${departureCode}&destination=${arrivalCode}&departDate=${date}&fullResults=false`
     );
     const data = await response.json();
 
