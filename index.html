@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Escape the airport chaos. Relax in premium airport lounges with unlimited food, drinks, WiFi and comfort before your flight.">
+
+  <title>Airport Lounges | Holiday Extras</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Airport Lounges - Your Peaceful Escape">
+  <meta property="og:description" content="Escape the airport chaos. Relax in premium lounges with unlimited food, drinks, and comfort.">
+  <meta property="og:type" content="website">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://d17s4kc6349e5h.cloudfront.net">
+  <link rel="preconnect" href="https://flight.dock-yard.io">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Airport Lounge Access",
+    "description": "Premium airport lounge access with unlimited food, drinks, WiFi and comfortable seating",
+    "provider": {
+      "@type": "Organization",
+      "name": "Holiday Extras",
+      "logo": "https://d17s4kc6349e5h.cloudfront.net/holidayextras/assets/images/logos/HolidayExtras-logo-horizontal-transparent.svg"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "United Kingdom"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <img src="https://d17s4kc6349e5h.cloudfront.net/holidayextras/assets/images/logos/HolidayExtras-logo-horizontal-transparent.svg"
+           alt="Holiday Extras"
+           class="logo"
+           height="60">
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <picture>
+      <source srcset="assets/hero.webp" type="image/webp">
+      <img src="assets/hero.jpg" alt="From peaceful picnic to airport lounge comfort" class="hero-img" width="1600" height="900" loading="eager">
+    </picture>
+    <div class="hero-overlay">
+      <div class="container">
+        <h1 class="hero-title">Your peaceful escape from airport chaos</h1>
+        <p class="hero-subtitle">Unlimited food, drinks & comfort before your flight</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <main>
+    <section class="search-section">
+      <div class="container">
+        <h2 class="section-title">Book your lounge</h2>
+
+        <form id="loungeForm" class="lounge-form">
+          <!-- Airport Selection -->
+          <div class="form-group">
+            <label for="airport" class="form-label">Departure airport</label>
+            <select id="airport" class="form-control" required>
+              <option value="">Choose airport</option>
+              <option value="LHR">London Heathrow</option>
+              <option value="LGW">London Gatwick</option>
+              <option value="MAN">Manchester</option>
+              <option value="STN">London Stansted</option>
+              <option value="LTN">London Luton</option>
+              <option value="BHX">Birmingham</option>
+              <option value="EDI">Edinburgh</option>
+              <option value="BRS">Bristol</option>
+              <option value="NCL">Newcastle</option>
+              <option value="LBA">Leeds Bradford</option>
+              <option value="EMA">East Midlands</option>
+              <option value="GLA">Glasgow</option>
+            </select>
+          </div>
+
+          <!-- Flight Lookup -->
+          <div class="form-group">
+            <label for="destination" class="form-label">Where are you flying to?</label>
+            <select id="destination" class="form-control" required>
+              <option value="">Choose destination</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="flightGroup" style="display: none;">
+            <label for="flight" class="form-label">Select your flight</label>
+            <select id="flight" class="form-control">
+              <option value="">Loading flights...</option>
+            </select>
+          </div>
+
+          <!-- Date -->
+          <div class="form-group">
+            <label for="outDate" class="form-label">Departure date</label>
+            <input type="date" id="outDate" class="form-control" required>
+          </div>
+
+          <!-- Lounge Entry Time (auto-calculated) -->
+          <div class="form-group">
+            <label for="outTime" class="form-label">Lounge entry time</label>
+            <select id="outTime" class="form-control">
+              <option value="00:00">00:00</option>
+              <option value="01:00">01:00</option>
+              <option value="02:00">02:00</option>
+              <option value="03:00">03:00</option>
+              <option value="04:00">04:00</option>
+              <option value="05:00">05:00</option>
+              <option value="06:00">06:00</option>
+              <option value="07:00">07:00</option>
+              <option value="08:00">08:00</option>
+              <option value="09:00" selected>09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="12:00">12:00</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+              <option value="20:00">20:00</option>
+              <option value="21:00">21:00</option>
+              <option value="22:00">22:00</option>
+              <option value="23:00">23:00</option>
+            </select>
+            <p class="form-hint" id="timeHint">Entry time will be set 3 hours before your flight</p>
+          </div>
+
+          <!-- Passengers -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="adults" class="form-label">Adults (12+)</label>
+              <input type="number" id="adults" class="form-control" min="1" max="9" value="2" required>
+            </div>
+            <div class="form-group">
+              <label for="children" class="form-label">Children (2-11)</label>
+              <input type="number" id="children" class="form-control" min="0" max="9" value="0">
+            </div>
+            <div class="form-group">
+              <label for="infants" class="form-label">Infants (0-1)</label>
+              <input type="number" id="infants" class="form-control" min="0" max="9" value="0">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Search lounges</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Cost Comparison -->
+    <section class="comparison-section">
+      <div class="container">
+        <h2 class="section-title">Why a lounge makes sense</h2>
+        <p class="section-intro">Compare the value of lounge access versus buying food and drinks at airport prices.</p>
+
+        <div class="comparison-grid">
+          <div class="comparison-card lounge-card">
+            <div class="card-header">
+              <h3>Airport Lounge</h3>
+              <p class="card-badge">Best Value</p>
+            </div>
+            <div class="card-price">
+              <span class="price-from">From</span>
+              <span class="price-amount">£20</span>
+              <span class="price-per">per person</span>
+            </div>
+            <div class="card-includes">
+              <h4>Included:</h4>
+              <ul>
+                <li>✓ Unlimited hot & cold food</li>
+                <li>✓ Unlimited alcoholic drinks</li>
+                <li>✓ Unlimited soft drinks & coffee</li>
+                <li>✓ Comfortable seating & tables</li>
+                <li>✓ Free WiFi</li>
+                <li>✓ Newspapers & magazines</li>
+                <li>✓ Phone charging points</li>
+                <li>✓ Flight information displays</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="comparison-card airport-card">
+            <div class="card-header">
+              <h3>Buying at the Airport</h3>
+            </div>
+            <div class="card-price">
+              <span class="price-note">Typical spend for a family of 4:</span>
+            </div>
+            <div class="card-breakdown">
+              <div class="breakdown-item">
+                <span class="item-name">4 coffees</span>
+                <span class="item-price">£16</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="item-name">4 sandwiches</span>
+                <span class="item-price">£24</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="item-name">4 bottles of water</span>
+                <span class="item-price">£12</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="item-name">2 snacks</span>
+                <span class="item-price">£8</span>
+              </div>
+              <div class="breakdown-total">
+                <span class="total-label">Total</span>
+                <span class="total-price">£60</span>
+              </div>
+            </div>
+            <p class="card-note">Plus: Nowhere comfortable to sit, no WiFi, limited options</p>
+          </div>
+        </div>
+
+        <div class="savings-banner">
+          <p><strong>A family of 4 can access the lounge from as little as £80</strong> — and enjoy unlimited food, drinks, and comfort for 3 hours before their flight.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits-section">
+      <div class="container">
+        <h2 class="section-title">What you get in the lounge</h2>
+
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">🍽️</div>
+            <h3>Unlimited Food</h3>
+            <p>Hot and cold buffet with a wide selection of meals, snacks, and desserts. Eat as much as you like.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🍷</div>
+            <h3>Unlimited Drinks</h3>
+            <p>Complimentary beer, wine, spirits, soft drinks, tea and coffee. All included in your lounge access.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🛋️</div>
+            <h3>Comfortable Seating</h3>
+            <p>Relax in comfortable armchairs and sofas away from the busy terminal crowds.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">📶</div>
+            <h3>Free WiFi</h3>
+            <p>Stay connected with fast, free WiFi throughout the lounge. Perfect for catching up on work or streaming.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🔌</div>
+            <h3>Charging Points</h3>
+            <p>Keep your devices charged with plenty of power sockets and USB ports at every table.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">📺</div>
+            <h3>Flight Displays</h3>
+            <p>Monitor your flight status on screens throughout the lounge. Never miss your boarding call.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Holiday Extras. All rights reserved.</p>
+      <p class="footer-tagline">Less hassle. More holiday.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
