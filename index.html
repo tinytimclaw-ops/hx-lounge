@@ -76,11 +76,18 @@
         <h2 class="section-title">Book your lounge</h2>
 
         <form id="loungeForm" class="lounge-form">
+          <!-- Date First -->
+          <div class="form-group">
+            <label for="outDate" class="form-label">Departure date</label>
+            <input type="date" id="outDate" class="form-control" required>
+            <p class="form-hint">Choose your date first to see available destinations</p>
+          </div>
+
           <!-- Airport Selection -->
           <div class="form-group">
             <label for="airport" class="form-label">Departure airport</label>
-            <select id="airport" class="form-control" required>
-              <option value="">Choose airport</option>
+            <select id="airport" class="form-control" required disabled>
+              <option value="">Select date first</option>
               <option value="LHR">London Heathrow</option>
               <option value="LGW">London Gatwick</option>
               <option value="MAN">Manchester</option>
@@ -99,22 +106,16 @@
           <!-- Flight Lookup -->
           <div class="form-group">
             <label for="destination" class="form-label">Where are you flying to?</label>
-            <select id="destination" class="form-control" required>
-              <option value="">Choose destination</option>
+            <select id="destination" class="form-control" required disabled>
+              <option value="">Choose airport first</option>
             </select>
           </div>
 
           <div class="form-group" id="flightGroup" style="display: none;">
             <label for="flight" class="form-label">Select your flight</label>
-            <select id="flight" class="form-control">
-              <option value="">Loading flights...</option>
+            <select id="flight" class="form-control" disabled>
+              <option value="">Choose destination first</option>
             </select>
-          </div>
-
-          <!-- Date -->
-          <div class="form-group">
-            <label for="outDate" class="form-label">Departure date</label>
-            <input type="date" id="outDate" class="form-control" required>
           </div>
 
           <!-- Lounge Entry Time (auto-calculated) -->

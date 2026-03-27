@@ -35,21 +35,49 @@ function setupEventListeners() {
   const dateInput = document.getElementById("outDate");
   const form = document.getElementById("loungeForm");
 
-  // When date changes, reload destinations and flights if needed
+  // When date is selected, enable airport dropdown
   dateInput.addEventListener("change", () => {
-    const airport = airportSelect.value;
-    if (airport) {
-      loadDestinations(airport);
+    const date = dateInput.value;
+    if (date) {
+      airportSelect.disabled = false;
+      airportSelect.innerHTML = `
+        <option value="">Choose airport</option>
+        <option value="LHR">London Heathrow</option>
+        <option value="LGW">London Gatwick</option>
+        <option value="MAN">Manchester</option>
+        <option value="STN">London Stansted</option>
+        <option value="LTN">London Luton</option>
+        <option value="BHX">Birmingham</option>
+        <option value="EDI">Edinburgh</option>
+        <option value="BRS">Bristol</option>
+        <option value="NCL">Newcastle</option>
+        <option value="LBA">Leeds Bradford</option>
+        <option value="EMA">East Midlands</option>
+        <option value="GLA">Glasgow</option>
+      `;
+
+      // If airport was already selected, reload destinations with new date
+      const currentAirport = airportSelect.value;
+      if (currentAirport) {
+        loadDestinations(currentAirport);
+      }
+    } else {
+      airportSelect.disabled = true;
+      airportSelect.innerHTML = '<option value="">Select date first</option>';
+      destinationSelect.disabled = true;
+      destinationSelect.innerHTML = '<option value="">Choose airport first</option>';
+      flightSelect.disabled = true;
+      document.getElementById("flightGroup").style.display = "none";
     }
   });
 
   // When airport changes, load destinations
   airportSelect.addEventListener("change", (e) => {
     destinationSelect.innerHTML = '<option value="">Choose destination</option>';
-    flightSelect.innerHTML = '<option value="">Select your flight</option>';
+    flightSelect.innerHTML = '<option value="">Choose destination first</option>';
     document.getElementById("flightGroup").style.display = "none";
 
-    if (e.target.value) {
+    if (e.target.value && dateInput.value) {
       loadDestinations(e.target.value);
     }
   });
@@ -81,8 +109,13 @@ async function loadDestinations(departureCode) {
   destinationSelect.innerHTML = '<option value="">Loading destinations...</option>';
   destinationSelect.disabled = true;
 
-  // Get date for API call
-  const departDate = dateInput.value || getTomorrowDate();
+  // Get date for API call - should always be set now
+  const departDate = dateInput.value;
+
+  if (!departDate) {
+    destinationSelect.innerHTML = '<option value="">Please select a date first</option>';
+    return;
+  }
 
   const url = `${FLIGHT_API}/destinations?location=${departureCode}&departDate=${departDate}`;
   console.log("Fetching destinations:", url);
