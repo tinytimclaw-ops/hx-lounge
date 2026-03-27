@@ -35,27 +35,36 @@ function setupEventListeners() {
   const dateInput = document.getElementById("outDate");
   const form = document.getElementById("loungeForm");
 
-  airportSelect.addEventListener("change", (e) => {
-    if (e.target.value) {
-      loadDestinations(e.target.value);
-    } else {
-      destinationSelect.innerHTML = '<option value="">Choose destination</option>';
-      document.getElementById("flightGroup").style.display = "none";
+  // When date changes, reload destinations and flights if needed
+  dateInput.addEventListener("change", () => {
+    const airport = airportSelect.value;
+    if (airport) {
+      loadDestinations(airport);
     }
   });
 
+  // When airport changes, load destinations
+  airportSelect.addEventListener("change", (e) => {
+    destinationSelect.innerHTML = '<option value="">Choose destination</option>';
+    flightSelect.innerHTML = '<option value="">Select your flight</option>';
+    document.getElementById("flightGroup").style.display = "none";
+
+    if (e.target.value) {
+      loadDestinations(e.target.value);
+    }
+  });
+
+  // When destination changes, load flights
   destinationSelect.addEventListener("change", (e) => {
+    flightSelect.innerHTML = '<option value="">Select your flight</option>';
+    document.getElementById("flightGroup").style.display = "none";
+
     if (e.target.value && airportSelect.value && dateInput.value) {
       loadFlights(airportSelect.value, e.target.value, dateInput.value);
     }
   });
 
-  dateInput.addEventListener("change", () => {
-    if (airportSelect.value && destinationSelect.value && dateInput.value) {
-      loadFlights(airportSelect.value, destinationSelect.value, dateInput.value);
-    }
-  });
-
+  // When flight is selected, calculate lounge entry time
   flightSelect.addEventListener("change", (e) => {
     if (e.target.value && e.target.value !== "") {
       updateLoungeEntryTime(e.target.value);
