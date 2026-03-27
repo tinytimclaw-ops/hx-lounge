@@ -185,10 +185,11 @@ async function loadFlights(departureCode, arrivalCode, date) {
     const data = await response.json();
     console.log("Flights data:", data);
 
-    if (data && data.flights && data.flights.length > 0) {
+    // API returns array directly, not { flights: [...] }
+    if (Array.isArray(data) && data.length > 0) {
       flightSelect.innerHTML = '<option value="">Select your flight</option>';
 
-      data.flights.forEach(f => {
+      data.forEach(f => {
         const flightCode = (f.flight && f.flight.code) || "";
         const depTime = (f.departure && f.departure.time) || "";
         const arrTime = (f.arrival && f.arrival.time) || "";
@@ -206,7 +207,7 @@ async function loadFlights(departureCode, arrivalCode, date) {
       });
 
       flightSelect.disabled = false;
-      console.log(`Loaded ${data.flights.length} flights`);
+      console.log(`Loaded ${data.length} flights`);
     } else {
       console.warn("No flights in response:", data);
       flightSelect.innerHTML = '<option value="">No flights found for this date</option>';
