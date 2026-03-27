@@ -84,9 +84,18 @@ async function loadDestinations(departureCode) {
   // Get date for API call
   const departDate = dateInput.value || getTomorrowDate();
 
+  const url = `${FLIGHT_API}/destinations?location=${departureCode}&departDate=${departDate}`;
+  console.log("Fetching destinations:", url);
+
   try {
-    const response = await fetch(`${FLIGHT_API}/destinations?location=${departureCode}&departDate=${departDate}`);
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
     const data = await response.json();
+    console.log("Destinations data:", data);
 
     if (Array.isArray(data) && data.length > 0) {
       destinationSelect.innerHTML = '<option value="">Choose destination</option>';
@@ -105,12 +114,14 @@ async function loadDestinations(departureCode) {
       });
 
       destinationSelect.disabled = false;
+      console.log(`Loaded ${data.length} destinations`);
     } else {
+      console.warn("No destinations in response:", data);
       destinationSelect.innerHTML = '<option value="">No destinations found</option>';
     }
   } catch (error) {
     console.error("Error loading destinations:", error);
-    destinationSelect.innerHTML = '<option value="">Error loading destinations</option>';
+    destinationSelect.innerHTML = `<option value="">Error: ${error.message}</option>`;
   }
 }
 
@@ -128,11 +139,18 @@ async function loadFlights(departureCode, arrivalCode, date) {
   flightSelect.disabled = true;
   flightGroup.style.display = "block";
 
+  const url = `${FLIGHT_API}/searchDayFlights?location=${departureCode}&destination=${arrivalCode}&departDate=${date}&fullResults=false`;
+  console.log("Fetching flights:", url);
+
   try {
-    const response = await fetch(
-      `${FLIGHT_API}/searchDayFlights?location=${departureCode}&destination=${arrivalCode}&departDate=${date}&fullResults=false`
-    );
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
     const data = await response.json();
+    console.log("Flights data:", data);
 
     if (data && data.flights && data.flights.length > 0) {
       flightSelect.innerHTML = '<option value="">Select your flight</option>';
@@ -155,12 +173,14 @@ async function loadFlights(departureCode, arrivalCode, date) {
       });
 
       flightSelect.disabled = false;
+      console.log(`Loaded ${data.flights.length} flights`);
     } else {
+      console.warn("No flights in response:", data);
       flightSelect.innerHTML = '<option value="">No flights found for this date</option>';
     }
   } catch (error) {
     console.error("Error loading flights:", error);
-    flightSelect.innerHTML = '<option value="">Error loading flights</option>';
+    flightSelect.innerHTML = `<option value="">Error: ${error.message}</option>`;
   }
 }
 
